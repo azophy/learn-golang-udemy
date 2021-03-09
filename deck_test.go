@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+  "os"
+  "testing"
+)
 
 /* notice that the func name is start with Uppercase, unlike our previous funcs
 which started with lowercase
@@ -20,4 +23,19 @@ func TestNewDeck(t *testing.T) {
   if d[len(d)-1] != "Three of Clubs" {
     t.Errorf("Expected first card of Three of Clubs, but got %v", d[len(d)-1])
   }
+}
+
+func TestSaveToDeckAndNewDeckTestFromFile(t *testing.T) {
+  os.Remove("_decktesting")
+
+  originalDeck := newDeck()
+  originalDeck.saveToFile("_decktesting")
+
+  loadedDeck := newDeckFromFile("_decktesting")
+
+  if len(originalDeck) != len(loadedDeck) {
+    t.Errorf("Expected the same deck size between original & loaded deck, but got size %v for loadedDeck vs %v for originalDeck", len(loadedDeck), len(originalDeck))
+  }
+
+  os.Remove("_decktesting")
 }
